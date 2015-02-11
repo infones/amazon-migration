@@ -1,9 +1,5 @@
-var AWS = require('aws-sdk'),
-    config = require('./config').config;
-
-AWS.config.update(config.amazon);
-
-var s3 = new AWS.S3(); 
+var s3helper = require('./s3helper'),
+    _ = require('lodash');
 
 // s3.listBuckets(function(err, data) {
 //   if (err) console.log(err, err.stack); // an error occurred
@@ -11,22 +7,17 @@ var s3 = new AWS.S3();
 // });
 
 
-var allKeys = [];
-function listAllKeys(marker, cb)
-{
-  s3.listObjects({Bucket: config.buckets.sourceBucket, Marker: marker}, function(err, data){
-    console.log(err);
-    allKeys.push(data.Contents);
+s3helper.listAllKeys('').then(function(keyArr) {
+    var flattenedObjects = _.flatten(_.union(keyArr));
 
-    if(data.IsTruncated)
-      listAllKeys(data.Contents.slice(-1)[0].Key, cb);
-    else
-      cb();
-  });
-}
+    console.log(flattenedObjects.length);
 
-listAllKeys('', function() {
-    console.log(allKeys);
+    var dupeFreeObjects = _.uniq(flattenedObjects, false, function(obj) {
+        var arr /* yarr */ = obj.Key.split('/');
+        return _.last(arr);
+    });
+
+    console.log(dupeFreeObjects.length);
 });
 
 // var params = {

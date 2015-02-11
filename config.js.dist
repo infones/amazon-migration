@@ -1,0 +1,11 @@
+exports.config = {
+    amazon: {
+        accessKeyId: 'lorem',
+        secretAccessKey: 'ipsum',
+        region: "eu-west-1",
+    },
+    buckets: {
+        sourceBucket: "dolor",
+        targetBucket: "sit"
+    }
+}

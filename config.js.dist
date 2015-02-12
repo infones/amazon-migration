@@ -1,8 +1,13 @@
 exports.config = {
-    amazon: {
+    amazon_west: {
         accessKeyId: 'lorem',
         secretAccessKey: 'ipsum',
         region: "eu-west-1",
+    },
+    amazon_central: {
+        accessKeyId: 'lorem',
+        secretAccessKey: 'ipsum',
+        region: "eu-central-1",
     },
     buckets: {
         sourceBucket: "dolor",

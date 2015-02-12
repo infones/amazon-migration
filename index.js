@@ -33,9 +33,22 @@ s3helper.listAllKeys('').then(function(keyArr) {
     //first we group objects by key
     var groupped = _.groupBy(folderFreeObjects, function(obj) {
         var arr /* yarr */ = obj.Key.split('/');
-
+ 
         return _.last(arr);
     });
+
+    var dupeInfo = _.filter(groupped, function(obj) {
+        return obj.length > 1;
+    });
+
+    //we write dupe info to a file
+    fs.writeFile("./output/groups.txt", JSON.stringify(dupeInfo), function(err) {
+        if(err) {
+            console.log(err);
+        } else {
+            console.log("The file was saved!");
+        }
+    }); 
 
     //we transform this group to see which key has duplicates
     var mappedValues = _.mapValues(groupped, function(obj) {
